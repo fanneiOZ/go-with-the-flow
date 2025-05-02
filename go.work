@@ -1,9 +1,9 @@
 go 1.24.2
 
 use (
+	./apps/donationapi
 	./apps/go-tamboon
-	./apps/test
 	./libs/domain
+	./libs/shared/domain
 	./libs/shared/infrastructure
-	./libs/shared/model
 )
