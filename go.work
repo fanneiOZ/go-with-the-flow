@@ -1,0 +1,9 @@
+go 1.24.2
+
+use (
+	./apps/go-tamboon
+	./apps/test
+	./libs/domain
+	./libs/shared/infrastructure
+	./libs/shared/model
+)
