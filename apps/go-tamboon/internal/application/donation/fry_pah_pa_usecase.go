@@ -6,7 +6,7 @@ import (
 	"encoding/csv"
 	"errors"
 	"fmt"
-	paymentApp "main/internal/application/payment"
+	paymentApp "go-tamboon/internal/application/payment"
 	"model/pkg/money"
 
 	"io"

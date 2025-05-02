@@ -2,13 +2,13 @@ package main
 
 import (
 	"domain/pkg/payment"
+	"go-tamboon/internal/application/donation"
+	paymentApp "go-tamboon/internal/application/payment"
+	"go-tamboon/internal/infrastructure/fileio"
+	"go-tamboon/internal/presenter/console"
 	"infrastructure/pkg/external/omise"
 	v20190529 "infrastructure/pkg/external/omise/v20190529"
 	"log"
-	"main/internal/application/donation"
-	paymentApp "main/internal/application/payment"
-	"main/internal/infrastructure/fileio"
-	"main/internal/presenter/console"
 
 	"os"
 )

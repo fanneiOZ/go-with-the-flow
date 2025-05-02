@@ -1,9 +1,9 @@
 package fileio_test
 
 import (
+	"go-tamboon/internal/infrastructure/fileio"
 	"io"
 	"log"
-	"main/internal/infrastructure/fileio"
 	"testing"
 )
 

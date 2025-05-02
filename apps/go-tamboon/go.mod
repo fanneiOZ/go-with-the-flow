@@ -1,4 +1,4 @@
-module main
+module go-tamboon
 
 go 1.24
 
