@@ -1,13 +1,14 @@
 package donation
 
 import (
+	paymentApp "application/pkg/payment"
 	"domain/pkg/donation"
 	"domain/pkg/payment"
 	"encoding/csv"
 	"errors"
 	"fmt"
-	paymentApp "go-tamboon/internal/application/payment"
 	"model/pkg/money"
+	"sync"
 
 	"io"
 	"strconv"
@@ -15,6 +16,8 @@ import (
 )
 
 var (
+	ErrInvalidHeader = errors.New("input file has the invalid headers")
+
 	expectedHeaders = [6]string{
 		"Name",
 		"AmountSubunits",
@@ -37,7 +40,7 @@ func NewFryPahPaUseCase(chargeCreditCardUseCase *paymentApp.ChargeCreditCard) *F
 	}
 }
 
-func (useCase *FryPahPaUseCase) Execute(inputReader io.Reader) (donation.TonPahPaSummary, error) {
+func (uc *FryPahPaUseCase) Execute(inputReader io.Reader) (donation.TonPahPaSummary, error) {
 	csvReader := csv.NewReader(inputReader)
 	headerRow, err := csvReader.Read()
 	if err != nil {
@@ -67,16 +70,49 @@ func (useCase *FryPahPaUseCase) Execute(inputReader io.Reader) (donation.TonPahP
 			continue
 		}
 
-		if err := useCase.donate(pahPaDto, rowNumber); err != nil {
+		if err := uc.donate(pahPaDto, rowNumber); err != nil {
 			// donation error: log and skip
 			continue
 		}
 	}
 
-	return useCase.tonPahPa.Summary(), nil
+	return uc.tonPahPa.Summary(), nil
 }
 
-func (useCase *FryPahPaUseCase) donate(input PahPaDto, rowNumber int) error {
+func (uc *FryPahPaUseCase) ExecuteBulk(reader *csv.Reader) error {
+	if !validateCsvHeader(reader) {
+		return ErrInvalidHeader
+	}
+
+	wg := sync.WaitGroup{}
+	rowNumber := 0
+	for {
+		data, err := reader.Read()
+		if err == io.EOF {
+			break
+		}
+		rowNumber++
+
+		if err != nil {
+			continue
+		}
+
+		go func(wg *sync.WaitGroup, record []string) {
+			wg.Add(1)
+			pahPaDto, _ := parseRecord(record)
+			uc.donate(pahPaDto, rowNumber)
+
+			defer wg.Done()
+		}(&wg, data)
+
+	}
+
+	wg.Wait()
+
+	return nil
+}
+
+func (uc *FryPahPaUseCase) donate(input PahPaDto, rowNumber int) error {
 	amount, err := strconv.ParseFloat(input.AmountSubunits, 64)
 	if err != nil {
 		return fmt.Errorf("parse donation amount error: %w", err)
@@ -113,13 +149,13 @@ func (useCase *FryPahPaUseCase) donate(input PahPaDto, rowNumber int) error {
 		return fmt.Errorf("unable to create song-pah-pa: %w", err)
 	}
 
-	transaction := useCase.chargeUseCase.Execute(
+	transaction := uc.chargeUseCase.Execute(
 		songPahPa.DonateByCard(),
 		songPahPa.DonateAmount().Amount(),
 		songPahPa.DonateAmount().Currency(),
 	)
 	songPahPa.AttachTransaction(transaction)
-	err = useCase.tonPahPa.AddSongPahPa(songPahPa)
+	err = uc.tonPahPa.AddSongPahPa(songPahPa)
 	if err != nil {
 		return fmt.Errorf("unable to attach song-pah-pa: %w", err)
 	}
@@ -127,13 +163,32 @@ func (useCase *FryPahPaUseCase) donate(input PahPaDto, rowNumber int) error {
 	return nil
 }
 
-func validateHeaderRow(record []string) bool {
-	if len(record) != len(expectedHeaders) {
+func validateHeaderRow(input []string) bool {
+	if len(input) != len(expectedHeaders) {
 		return false
 	}
 
-	for i := 0; i < len(expectedHeaders); i++ {
-		if record[i] != expectedHeaders[i] {
+	for pos, header := range input {
+		if header != expectedHeaders[pos] {
+			return false
+		}
+	}
+
+	return true
+}
+
+func validateCsvHeader(reader *csv.Reader) bool {
+	headers, err := reader.Read()
+	if err != nil {
+		return false
+	}
+
+	if len(headers) != len(expectedHeaders) {
+		return false
+	}
+
+	for pos, header := range headers {
+		if header != expectedHeaders[pos] {
 			return false
 		}
 	}

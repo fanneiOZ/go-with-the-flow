@@ -9,6 +9,7 @@ import (
 type DecodedReader struct {
 	io.Reader
 	file *os.File
+	//file *io.ReadCloser
 }
 
 func OpenAndDecodeRot128File(path string) (*DecodedReader, error) {
@@ -29,4 +30,15 @@ func OpenAndDecodeRot128File(path string) (*DecodedReader, error) {
 
 func (d *DecodedReader) Close() error {
 	return d.file.Close()
+}
+
+func DecodeRot128(input io.ReadCloser) (io.Reader, error) {
+	reader, err := cipher.NewRot128Reader(input)
+	if err != nil {
+		_ = input.Close()
+
+		return nil, err
+	}
+
+	return reader, nil
 }

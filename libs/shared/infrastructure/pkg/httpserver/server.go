@@ -14,16 +14,17 @@ func NewHttpServer() *HttpServer {
 	}
 }
 
-func (s *HttpServer) Start() {
-	mux := http.NewServeMux()
-	mux.HandleFunc("/test", func(w http.ResponseWriter, r *http.Request) {
-		_, err := w.Write([]byte("Hello World"))
-		if err != nil {
-			return
-		}
-	})
+func (s *HttpServer) Instance() *http.Server {
+	return s.server
+}
 
-	http.Handle("/", mux)
+func (s *HttpServer) Handle(handler http.Handler) *HttpServer {
+	http.Handle("/", handler)
+
+	return s
+}
+
+func (s *HttpServer) Start() {
 	err := s.server.ListenAndServe()
 	if err != nil {
 		panic(err)

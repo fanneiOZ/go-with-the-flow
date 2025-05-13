@@ -4,6 +4,7 @@ use (
 	./apps/donationapi
 	./apps/go-tamboon
 	./libs/domain
+	./libs/shared/application
 	./libs/shared/domain
 	./libs/shared/infrastructure
 )
