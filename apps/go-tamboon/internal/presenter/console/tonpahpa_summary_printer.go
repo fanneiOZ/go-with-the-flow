@@ -1,10 +1,10 @@
 package console
 
 import (
-	"domain/pkg/donation"
+	"domain/donation"
 	"fmt"
 	"github.com/dustin/go-humanize"
-	"model/pkg/money"
+	"shareddomain/money"
 	"strings"
 )
 

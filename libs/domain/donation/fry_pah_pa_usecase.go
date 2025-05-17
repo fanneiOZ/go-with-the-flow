@@ -1,15 +1,12 @@
 package donation
 
 import (
-	paymentApp "application/pkg/payment"
-	"domain/pkg/donation"
-	"domain/pkg/payment"
+	"domain/payment"
 	"encoding/csv"
 	"errors"
 	"fmt"
-	"model/pkg/money"
+	"shareddomain/money"
 	"sync"
-
 	"io"
 	"strconv"
 	"strings"
@@ -29,26 +26,26 @@ var (
 )
 
 type FryPahPaUseCase struct {
-	tonPahPa      *donation.TonPahPa
-	chargeUseCase *paymentApp.ChargeCreditCard
+	tonPahPa      *TonPahPa
+	chargeUseCase *payment.ChargeCreditCard
 }
 
-func NewFryPahPaUseCase(chargeCreditCardUseCase *paymentApp.ChargeCreditCard) *FryPahPaUseCase {
+func NewFryPahPaUseCase(chargeCreditCardUseCase *payment.ChargeCreditCard) *FryPahPaUseCase {
 	return &FryPahPaUseCase{
-		tonPahPa:      donation.CreateTonPahPa(),
+		tonPahPa:      CreateTonPahPa(),
 		chargeUseCase: chargeCreditCardUseCase,
 	}
 }
 
-func (uc *FryPahPaUseCase) Execute(inputReader io.Reader) (donation.TonPahPaSummary, error) {
+func (uc *FryPahPaUseCase) Execute(inputReader io.Reader) (TonPahPaSummary, error) {
 	csvReader := csv.NewReader(inputReader)
 	headerRow, err := csvReader.Read()
 	if err != nil {
-		return donation.TonPahPaSummary{}, err
+		return TonPahPaSummary{}, err
 	}
 
 	if !validateHeaderRow(headerRow) {
-		return donation.TonPahPaSummary{}, fmt.Errorf("unexpected csv headers: %w", err)
+		return TonPahPaSummary{}, fmt.Errorf("unexpected csv headers: %w", err)
 	}
 
 	rowNumber := 0
@@ -139,10 +136,10 @@ func (uc *FryPahPaUseCase) donate(input PahPaDto, rowNumber int) error {
 		return fmt.Errorf("donating card is invalid: %w", err)
 	}
 
-	songPahPa, err := donation.CreateSongPahPa(
+	songPahPa, err := CreateSongPahPa(
 		strconv.FormatInt(int64(rowNumber), 10),
 		input.Name,
-		money.New(donation.PahPaCurrency, amount/100),
+		money.New(PahPaCurrency, amount/100),
 		donateByCard,
 	)
 	if err != nil {

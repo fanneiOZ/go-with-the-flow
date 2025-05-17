@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"github.com/gin-gonic/gin"
 	"github.com/opn-ooo/challenges/challenge-go/cipher"
-	"infrastructure/pkg/fileio"
+	"sharedinfra/fileio"
 	"io"
 	"net/http"
 )

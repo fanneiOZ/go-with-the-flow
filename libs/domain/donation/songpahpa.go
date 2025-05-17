@@ -1,8 +1,8 @@
 package donation
 
 import (
-	"domain/pkg/payment"
-	"model/pkg/money"
+	"domain/payment"
+	"shareddomain/money"
 	"strings"
 )
 

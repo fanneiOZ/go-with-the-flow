@@ -1,8 +1,8 @@
 package main
 
 import (
-	internalHttp "donationapi/internal/infrastructure/http"
-	"infrastructure/pkg/httpserver"
+	internalHttp "donationapi/internal/infra/http"
+	"sharedinfra/httpserver"
 )
 
 func main() {

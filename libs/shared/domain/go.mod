@@ -1,5 +1,5 @@
-module model
+module shareddomain
 
 go 1.24
 
-require github.com/shopspring/decimal v1.4.0 // indirect
+require github.com/shopspring/decimal v1.4.0

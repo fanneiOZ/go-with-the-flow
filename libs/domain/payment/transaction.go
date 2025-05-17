@@ -2,7 +2,7 @@ package payment
 
 import (
 	"errors"
-	"model/pkg/money"
+	"shareddomain/money"
 	"strings"
 	"time"
 )

@@ -6,5 +6,5 @@ use (
 	./libs/domain
 	./libs/shared/application
 	./libs/shared/domain
-	./libs/shared/infrastructure
+	./libs/shared/infra
 )

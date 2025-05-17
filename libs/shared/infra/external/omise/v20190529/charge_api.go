@@ -3,7 +3,7 @@ package v20190529
 import (
 	"encoding/json"
 	"fmt"
-	"infrastructure/pkg/external/omise"
+	"sharedinfra/external/omise"
 	"net/http"
 	"net/url"
 	"strings"

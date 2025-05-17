@@ -1,16 +1,14 @@
 package handler
 
 import (
-	"application/pkg/donation"
-	"application/pkg/payment"
-	donation2 "domain/pkg/donation"
-	payment2 "domain/pkg/payment"
+	"domain/donation"
+	"domain/payment"
 	"encoding/csv"
 	"github.com/gin-gonic/gin"
-	"infrastructure/pkg/external/omise"
-	v20190529 "infrastructure/pkg/external/omise/v20190529"
-	"infrastructure/pkg/fileio"
-	"infrastructure/pkg/httpserver"
+	"sharedinfra/external/omise"
+	"sharedinfra/external/omise/v20190529"
+	"sharedinfra/fileio"
+	"sharedinfra/httpserver"
 	"io"
 	"log"
 	"math/rand"
@@ -50,7 +48,7 @@ func bulkFryPahpaHandler() gin.HandlerFunc {
 	tokenApi := v20190529.NewTokenAPI(cfg)
 	chargeApi := v20190529.NewChargeAPI(cfg)
 
-	paymentService := payment2.NewOmisePaymentService(tokenApi, chargeApi)
+	paymentService := payment.NewOmisePaymentService(tokenApi, chargeApi)
 	chargeUseCase := payment.NewChargeCreditCard(paymentService)
 	fryPahPaUseCase := donation.NewFryPahPaUseCase(chargeUseCase)
 

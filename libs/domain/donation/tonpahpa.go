@@ -1,6 +1,6 @@
 package donation
 
-import "model/pkg/money"
+import "shareddomain/money"
 
 type TonPahPa struct {
 	total        money.Money

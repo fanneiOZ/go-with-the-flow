@@ -1,7 +1,7 @@
 package http
 
 import (
-	"donationapi/internal/infrastructure/http/handler"
+	"donationapi/internal/infra/http/handler"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

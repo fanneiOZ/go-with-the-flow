@@ -1,8 +1,8 @@
 package payment
 
 import (
-	v20190529 "infrastructure/pkg/external/omise/v20190529"
 	"math"
+	"sharedinfra/external/omise/v20190529"
 )
 
 var _ PaymentService = (*OmisePaymentService)(nil)

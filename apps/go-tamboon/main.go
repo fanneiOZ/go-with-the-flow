@@ -1,15 +1,13 @@
 package main
 
 import (
-	"application/pkg/donation"
-	paymentApp "application/pkg/payment"
-	"domain/pkg/payment"
+	"domain/donation"
+	"domain/payment"
 	"go-tamboon/internal/presenter/console"
-	"infrastructure/pkg/external/omise"
-	v20190529 "infrastructure/pkg/external/omise/v20190529"
-	"infrastructure/pkg/fileio"
+	"sharedinfra/external/omise"
+	"sharedinfra/external/omise/v20190529"
+	"sharedinfra/fileio"
 	"log"
-
 	"os"
 )
 
@@ -51,7 +49,7 @@ func initFryPahPaUseCase() *donation.FryPahPaUseCase {
 	omiseTokenApi := v20190529.NewTokenAPI(omiseApiConfig)
 	omiseChargeApi := v20190529.NewChargeAPI(omiseApiConfig)
 	omisePaymentService := payment.NewOmisePaymentService(omiseTokenApi, omiseChargeApi)
-	chargeCreditCardUseCase := paymentApp.NewChargeCreditCard(omisePaymentService)
+	chargeCreditCardUseCase := payment.NewChargeCreditCard(omisePaymentService)
 
 	return donation.NewFryPahPaUseCase(chargeCreditCardUseCase)
 }

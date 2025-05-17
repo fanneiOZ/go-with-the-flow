@@ -1,6 +1,6 @@
 package config
 
-import "infrastructure/pkg/external/omise"
+import "sharedinfra/external/omise"
 
 type AppSettings struct {
 	HttpPort       string `env:"http_port"`

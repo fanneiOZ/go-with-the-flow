@@ -2,7 +2,7 @@ package money_test
 
 import (
 	"errors"
-	"model/pkg/money"
+	"shareddomain/money"
 	"reflect"
 	"testing"
 )

@@ -1,7 +1,7 @@
 package fileio_test
 
 import (
-	"infrastructure/pkg/fileio"
+	"sharedinfra/fileio"
 	"io"
 	"log"
 	"testing"

@@ -1,4 +1,4 @@
-module infrastructure
+module sharedinfra
 
 go 1.24
 
