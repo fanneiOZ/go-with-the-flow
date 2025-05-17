@@ -12,7 +12,7 @@ func NewChargeCreditCard(paymentService PaymentService) *ChargeCreditCard {
 	return &ChargeCreditCard{paymentService: paymentService}
 }
 
-func (uc *ChargeCreditCard) Execute(inputCard Card, amount float64, currency string) *payment.Transaction {
+func (uc *ChargeCreditCard) Execute(inputCard Card, amount float64, currency string) *Transaction {
 	chargingAmount := money.New(currency, amount)
 	transaction := CreateTransaction(chargingAmount)
 	chargingCard, err := NewCard(inputCard)
