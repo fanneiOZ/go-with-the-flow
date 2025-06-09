@@ -1,9 +1,9 @@
 package fileio
 
 import (
-	"github.com/opn-ooo/challenges/challenge-go/cipher"
 	"io"
 	"os"
+	"sharedinfra/cipher"
 )
 
 type DecodedReader struct {

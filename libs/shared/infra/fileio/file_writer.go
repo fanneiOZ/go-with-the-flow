@@ -1,8 +1,8 @@
 package fileio
 
 import (
-	"github.com/opn-ooo/challenges/challenge-go/cipher"
 	"io"
+	"sharedinfra/cipher"
 )
 
 type EncodedWriter struct {
