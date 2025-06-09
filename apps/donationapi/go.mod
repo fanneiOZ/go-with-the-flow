@@ -4,7 +4,7 @@ go 1.24
 
 require (
 	github.com/gin-gonic/gin v1.10.0
-	github.com/opn-ooo/challenges v0.0.0-20240913094335-d0c3dabe14c6
+	//github.com/opn-ooo/challenges v0.0.0-20240913094335-d0c3dabe14c6
 )
 
 require (
