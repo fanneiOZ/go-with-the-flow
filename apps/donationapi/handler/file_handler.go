@@ -3,10 +3,10 @@ package handler
 import (
 	"bytes"
 	"github.com/gin-gonic/gin"
-	"github.com/opn-ooo/challenges/challenge-go/cipher"
-	"sharedinfra/fileio"
 	"io"
 	"net/http"
+	"sharedinfra/cipher"
+	"sharedinfra/fileio"
 )
 
 const (

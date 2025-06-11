@@ -5,14 +5,14 @@ import (
 	"domain/payment"
 	"encoding/csv"
 	"github.com/gin-gonic/gin"
-	"sharedinfra/external/omise"
-	"sharedinfra/external/omise/v20190529"
-	"sharedinfra/fileio"
-	"sharedinfra/httpserver"
 	"io"
 	"log"
 	"math/rand"
 	"net/http"
+	"sharedinfra/external/omise"
+	"sharedinfra/external/omise/v20190529"
+	"sharedinfra/fileio"
+	"sharedinfra/httpserver"
 	"sync"
 	"time"
 )
@@ -50,7 +50,7 @@ func bulkFryPahpaHandler() gin.HandlerFunc {
 
 	paymentService := payment.NewOmisePaymentService(tokenApi, chargeApi)
 	chargeUseCase := payment.NewChargeCreditCard(paymentService)
-	fryPahPaUseCase := donation.NewFryPahPaUseCase(chargeUseCase)
+	_ = donation.NewFryPahPaUseCase(chargeUseCase)
 
 	return func(c *gin.Context) {
 		file, _ := c.FormFile("file")

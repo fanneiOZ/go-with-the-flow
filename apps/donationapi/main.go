@@ -1,13 +1,13 @@
 package main
 
 import (
-	internalHttp "donationapi/internal/infra/http"
+	donationApi "donationapi/infra/http"
 	"sharedinfra/httpserver"
 )
 
 func main() {
 	server := httpserver.NewHttpServer()
-	server.Handle(internalHttp.Router())
+	server.Handle(donationApi.Router())
 	server.Instance()
 	server.Start()
 }
