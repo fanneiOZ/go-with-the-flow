@@ -63,4 +63,28 @@ func TestJson(t *testing.T) {
 		fmt.Println(mapB)
 
 	})
+
+	t.Run("case 4", func(t *testing.T) {
+		r := &Response{
+			ResourceType: ResourceType{Id: "1234", Type: "response"},
+			Key:          "abc",
+			Value:        "bc",
+		}
+
+		result, _ := json.Marshal(r)
+
+		fmt.Println(string(result))
+	})
+
+}
+
+type ResourceType struct {
+	Id   string `json:"object_id"`
+	Type string `json:"type"`
+}
+
+type Response struct {
+	ResourceType
+	Key   string `json:"key"`
+	Value string `json:"value"`
 }

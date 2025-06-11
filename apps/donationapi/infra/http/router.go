@@ -8,8 +8,9 @@ import (
 
 func Router() http.Handler {
 	router := gin.Default()
-	handler.PahpaRouterGroup(router)
-	handler.FileRouter(router)
+	//handler.PahpaRouterGroup(router)
+	//handler.FileRouter(router)
+	handler.CampaignRouterGroup(router)
 
 	return router
 }
