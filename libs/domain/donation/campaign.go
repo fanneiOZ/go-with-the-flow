@@ -1,21 +1,25 @@
 package donation
 
-import domain "shareddomain"
+import (
+	"shareddomain/entity"
+	"strconv"
+)
 
-var _ domain.Entity = (*Campaign)(nil)
+var _ entity.Entity = (*Campaign)(nil)
 
 type Campaign struct {
-	id          string
+	id          int
 	Title       string
 	Description string
 	Active      bool
+	entity.Version
 }
 
 func (c *Campaign) Id() string {
-	return c.id
+	return strconv.Itoa(c.id)
 }
 
-func (c *Campaign) Type() domain.EntityType {
+func (c *Campaign) Type() entity.Type {
 	return "campaign"
 }
 
@@ -25,6 +29,7 @@ func NewCampaign(state Campaign) *Campaign {
 		Title:       state.Title,
 		Description: state.Description,
 		Active:      state.Active,
+		Version:     state.Version,
 	}
 }
 
@@ -33,5 +38,6 @@ func CreateCampaign(title, description string) (*Campaign, error) {
 		Title:       title,
 		Description: description,
 		Active:      true,
+		Version:     entity.NewVersion(),
 	}, nil
 }
