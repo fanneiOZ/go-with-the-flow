@@ -1,12 +1,15 @@
 package response
 
-import domain "shareddomain"
+import (
+	"shareddomain/entity"
+)
 
 type Metadata struct {
-	Id   string            `json:"id"`
-	Type domain.EntityType `json:"entity_type"`
+	Id      string      `json:"id"`
+	Type    entity.Type `json:"entity_type"`
+	Version uint        `json:"version"`
 }
 
-func CreateMetadata(object domain.Entity) Metadata {
-	return Metadata{Id: object.Id(), Type: object.Type()}
+func CreateMetadata(object entity.Entity) Metadata {
+	return Metadata{Id: object.Id(), Type: object.Type(), Version: object.EntityVersion()}
 }
