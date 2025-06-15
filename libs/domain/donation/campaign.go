@@ -3,6 +3,7 @@ package donation
 import (
 	"shareddomain/entity"
 	"strconv"
+	"time"
 )
 
 var _ entity.Entity = (*Campaign)(nil)
@@ -12,7 +13,9 @@ type Campaign struct {
 	Title       string
 	Description string
 	Active      bool
-	entity.Version
+	createdAt   time.Time
+	updatedAt   time.Time
+	*entity.Version
 }
 
 func (c *Campaign) Id() string {
@@ -30,6 +33,8 @@ func NewCampaign(state Campaign) *Campaign {
 		Description: state.Description,
 		Active:      state.Active,
 		Version:     state.Version,
+		createdAt:   state.createdAt,
+		updatedAt:   state.updatedAt,
 	}
 }
 
@@ -38,6 +43,6 @@ func CreateCampaign(title, description string) (*Campaign, error) {
 		Title:       title,
 		Description: description,
 		Active:      true,
-		Version:     entity.NewVersion(),
+		Version:     entity.CreateNewVersion(),
 	}, nil
 }
