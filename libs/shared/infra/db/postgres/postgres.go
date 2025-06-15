@@ -44,6 +44,7 @@ func (ctx *Context) Acquire() (*pgxpool.Conn, error) {
 }
 
 func connect() (*pgxpool.Pool, error) {
+	// TODO - inject the config
 	connectionString := "postgres://appadmin:@pp@m1n@localhost:15342/gotamboon_local"
 	ctx := context.Background()
 	pool, err := pgxpool.Connect(ctx, connectionString)
