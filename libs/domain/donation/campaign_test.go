@@ -10,8 +10,8 @@ func TestCampaign(t *testing.T) {
 	t.Run("should create a new Campaign", func(t *testing.T) {
 		campaign, _ := donation.CreateCampaign("title", "description")
 
-		if campaign.Id() != "" {
-			t.Error("Id should be nil")
+		if campaign.Id() != "0" {
+			t.Error("Id should be 0")
 		}
 
 		if campaign.Type() != "campaign" {

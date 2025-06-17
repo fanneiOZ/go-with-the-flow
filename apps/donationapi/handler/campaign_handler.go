@@ -19,8 +19,48 @@ func CampaignRouterGroup(engine *gin.Engine) *gin.RouterGroup {
 	group := engine.Group(GroupPathCampaign)
 	group.POST("", createNewCampaign)
 	group.GET(":id", findById)
+	group.PUT(":id", updateCampaign)
 
 	return group
+}
+
+func updateCampaign(c *gin.Context) {
+	pgContext, err := postgres.NewContext(context.Background())
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	repo := donation.NewCampaignRepo(pgContext)
+	uc := donation.NewUpdateCampaignUseCase(repo)
+
+	var input donation.UpdateCampaignInput
+	err = c.ShouldBindBodyWithJSON(&input)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	input.Id = id
+	campaign, err := uc.Execute(input)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	res := response.Campaign{
+		Metadata:    response.CreateMetadata(campaign),
+		Title:       campaign.Title,
+		Description: campaign.Description,
+	}
+
+	c.JSON(200, res)
 }
 
 func createNewCampaign(c *gin.Context) {
